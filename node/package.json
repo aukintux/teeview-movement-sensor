@@ -1,0 +1,12 @@
+{
+  "name": "teeview_analytics",
+  "version": "1.0.0",
+  "description": "Teeview analytics tool on nodejs",
+  "main": "teeview_analytics.js",
+  "author": "aukintux",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "tinyreq": "^3.2.0"
+  }
+}
