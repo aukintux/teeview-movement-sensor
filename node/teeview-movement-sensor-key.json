@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "teeview-movement-sensor",
+  "private_key_id": "2999de36ab8b48a11761863e7ca23f7f76a932dc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDe3UZyStcCZUs3\nh2smncY8fmuh3R0PFft9Y8levxBdlPIToHAFtKcSxpIrVnVT6ZmiT9CIR4xTbZpx\nsn9ql7EjKP6TI2YdSdrbdsKvk9FwmVyFEn6rANqQSTrKXom2VGAVjgS0OPn/PDUy\n8I6jUlfualwxsVH2vUAqlIytBqN4cBy9s5mUDR1DON7DR4lwReaT/oLZcmuxkgax\nie6A5mFm0S1ac5nIqqQVM3DAFxKPi9vfyUXXdpkbEekah9HDU7UojIjNnahvfNp2\nLU19x/IT8cyYiscsL1muGKPf0+pZ4ecN03vqXFhMynbKr2OLPQS3ZeR3WIK7xm73\nr2Q+d+6bAgMBAAECggEBALJMtZ+a4Im6IIM8hC1Q7NhZDCNjk2wOWjXnL6PtmFpG\nX6X0Jatq7H/I/ghOE3Ae5BtHX76n/0x/06BC/k15Lu7CTWnKWFf2TnJmgTuXN2iu\nSabtNQn6lOH6tF5TZDnLJ1QXWwwUyW257ZXjfzqLFm5YCYp4IusUXdGzJxkGxqID\nEO3xGxIzAlc9D38+o3KAcf3HuBox7VxF5x30+5GU+0eq7jPAhvW0Rwrcgnljls+o\nGHvhrJwy8HH94pTzjSuWxCLF1y/JS5Hq1EpDhAmVjrTFKL/nLgP/DsZZ9+YIludD\n5BDehoz7odvf3a7iP3Qinob+VNI9miNl4PMq8D5C2oECgYEA/2QFCnZ+CHvuWN6m\njC0DWhqNmKRaCA7WSR94kbQ7TCs+MZL5yimbM6nKxYyZJtfBM2ELATrAeixLhQym\nsB9rTSbOvIQh0+8+qaGhoaSWhHrYD3RMI1tKfqDtu7E1jXhcmdVazzzEJeGv6UxU\n4W3a+9KRRY05HoTkGwPEL6vrpo0CgYEA32Vj1QRV3/9OZWnBPWTVKJE4Z7y9u5ub\nxdUdMLUmwzkLQpAERBFzmuvSOOHnndDzoa3g1XUbTYviBefOD0lE5ufVu3a2hWN2\npDBgeqWWPajwqOI7wnZx7WIepo+kPJ403FBJECWnl6AjkWfa8i+nKHxSLi8rSI4Q\n8cok/2fhE8cCgYAzflk92NJkp4hRRuNR1Cme20e9hTXZ9hPivoOy7SIfo4Bwwm+3\nAViXvB50YnrmyA3ebCyp3My+VXwMoZZiYJNkBPUeMY4Yi16ZGUvbqbHnmFVEGHDZ\nmCiXC5+jfoGLur8BDXG340qxUKYFZiyfH2VN7RD5cxYXPzg28jV2XzWuaQKBgQDK\n288kCKPSnIwcG0SW85F9HSITUZkZW9zAcR3otRdV/97xusWk6hQIgkyLytgAv1X9\nY1/fdlAswvGkWzMLPoWLCMtVSB/GUOPThPqXZPZhV5/yPD34AIbEAW3D4nxJb4Cg\n72bpesgNMCYcTCrN8efhI8OcnMi5QgixB9dA9pu00QKBgCzDnu2s9BhXpHXs1Yp3\nec2xmRf207UOfLDKbe71DzTOAyKYmupJpN5W7YRikzhzKGYAP43FLttylVgTHJNH\nM+dVYX/FNSmq37V129ZHCXB16laDTpc9EQ0kyR4uY1HCVwo0UN0zNZ9PLbvb2jwJ\nSDMaGZtvfXcPahQlmIcMlxyy\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-c4h0c@teeview-movement-sensor.iam.gserviceaccount.com",
+  "client_id": "100500234911298405850",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-c4h0c%40teeview-movement-sensor.iam.gserviceaccount.com"
+}
