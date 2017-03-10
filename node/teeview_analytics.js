@@ -15,7 +15,7 @@ admin.initializeApp({
 var db = admin.database();
 var refCampaigns = db.ref("campaigns");
 var refSalesData = db.ref("sales_data");
-var refCampaigns = db.ref("draw_data");
+var refDrawData = db.ref("draw_data");
     
 // This function will make successive get requests to teeview and return the new campaigns that were added
 // within the last day or sooner than the latest campaign saved on the last query latest_campaign_link
@@ -50,7 +50,7 @@ function teeviewScraper () {
     		var campaign_url = $(this).find("h3 a").attr("href");
     		var campaign_time_ago = $(this).find("p.text-muted small").text();
     		// If reached campaigns added within the last day or latest campaign queried break each loop
-    		if (campaign_time_ago.indexOf("day") !== -1 || config["LATEST_CAMPAIGN_LINK"] === campaign_url) {
+    		if (campaign_time_ago.indexOf("day") !== -1 || config.latest_campaign_link === campaign_url) {
     			continue_scraping = false;
     			return false;
     		}
@@ -91,9 +91,18 @@ function writeCampaignToFirebase (i) {
             if (sales_data_html_el.length > 0) {
                 var sales_data_text = sales_data_html_el.text().toLowerCase();
                 if (sales_data_text.indexOf("only") !== -1 || sales_data_text.indexOf("sold") !== -1) {
-                    // Write campaign to firebase
-                    console.log("write into Firebase: ", campaign_url);
-                    writeCampaignToFirebase(i+1);
+                    refCampaigns.push(
+                    {
+                        url: campaign_url,
+                        name: $(".campaign__name").text(),
+                        img: "https:" + $(".image_stack__image").attr("src")
+                    }, 
+                    function (err) {
+                        if (err) { return console.log("Error in request @ writeCampaignToFirebase: ", err); }
+                        // Write campaign to firebase
+                        console.log("wrote into Firebase: ", campaign_url);
+                        writeCampaignToFirebase(i+1);
+                    });
                     // campaigns.append((campaign_url, html.select(".campaign__name")[0].getText(), "https:" + html.select(".image_stack__image")[0]["src"]))
                 } else {
                     // Make next request
@@ -107,6 +116,7 @@ function writeCampaignToFirebase (i) {
     } else {
         console.log("ending campaigns_updater.")
         // Ended campaigns updater. Go on to the next step. Sales data updater.
+        process.exit();
     }
 }
 
