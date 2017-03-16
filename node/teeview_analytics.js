@@ -75,8 +75,9 @@ function teeviewScraper () {
 // new campaign to the respective database table.
 
 function writeCampaignToFirebase (i) {
-    console.log("writeCampaignToFirebase::", i);
     if (i < teeview_data.length) {
+        var percentage_checked = 100*i/teeview_data.length;
+        console.log(percentage_checked.toFixed(2) + "%" + " of teeview_data checked");
         var campaign_url = teeview_data[i];
         request(campaign_url, function (err, body) {
             // If error return
@@ -132,8 +133,8 @@ function campaignsUpdater () {
 // will be stored as a new entry on the database table that stores the sales or "position" data
 // of each relevant campaign.
 function writeCampaignSalesToFirebase (i) {
-    if (i < saved_campaign_urls.length - 1) {
-        campaign_url = saved_campaign_urls[i];
+    if (i < data_updater_campaign_urls.length) {
+        var campaign_url = data_updater_campaign_urls[i];
         request(campaign_url, function (err, body) {
             // If error return
             if (err) { return console.log("Error in request @ writeCampaignToFirebase: ", err); }
@@ -143,7 +144,7 @@ function writeCampaignSalesToFirebase (i) {
             var sales = undefined;
             var timestamp = Math.floor(Date.now() / 1000);
             // Get sales data
-            var sales_data_text =$(".persistent_timer__order_count").text().toLowerCase();
+            var sales_data_text = $(".persistent_timer__order_count").text().toLowerCase();
             // Get reported sales data depending on wether goal has been achieved or not yet
             if (sales_data_text.indexOf("only") !== -1) {
                 sales = -parseInt(sales_data_text.split(" ")[1]);
@@ -160,47 +161,111 @@ function writeCampaignSalesToFirebase (i) {
                     // Make next request
                     writeCampaignSalesToFirebase(i+1);
                 });
-            } 
+            } else {
+                return console.log("Error in request @ writeCampaignToFirebase. Sales data is not of type int");
+            }
         });
     } else {
         console.log("finished sales_data_updater.");
-        // Go on to the next step
+        // Finished the loop
+        console.log(">>Finished the loop. I'll go to sleep now. C'ya");
         process.exit();
     }
 }
 
-var saved_campaign_urls = [];
+var data_updater_campaign_urls = [];
 
 function salesDataUpdater () {
     console.log("starting sales_data_updater...");
     // Make asynchronous call to fetch all campaigns
-    refCampaigns.on("value", function(snapshot) {
+    refCampaigns.once("value").then(function(snapshot) {
         var obj = snapshot.val();
-        // Save all campaign urls
+        // Update data_updater_campaign_urls
+        data_updater_campaign_urls = [];
         for (var key in obj) {
-            saved_campaign_urls.push(obj[key].url);
+            data_updater_campaign_urls.push(obj[key].url);
         }
         // Loop through each campaign and get the sales data
         writeCampaignSalesToFirebase(0);
-    }, function (err) {
-      console.log("The read failed: " + err.code);
     });
 }
 
-// This function is in charge of plotting all campaigns in the database for which there is a high
-// achievement potential. In order to know this one needs to first select the ones that have enough
-// data to make an assessment about it. Those campaigns with more than 10 entries on the "sales_data"
-// database table will be selected. Among those only the ones with high achievement potential will
-// be plotted in order of importance, starting by acceleration, velocity and finally position
-function updateDrawingPlots () {
-	// >> Code goes here
-}
+
+
+
 
 // This function will clean the database removing the entries in both tables i.e. "campaigns" and
 // "sales_data" which are associated to campaigns that have already ended
-function cleanDatabase () {
-    // >> Code goes here
+function cleanCampaignFromFirebase (i) {
+    if (i < database_cleaner_campaign_urls.length) {
+        var campaign_url = database_cleaner_campaign_urls[i];
+        console.log("checking campaign for cleanup:", campaign_url);
+        request(campaign_url, function (err, body) {
+            // If error return
+            if (err) { return console.log("Error in request @ writeCampaignToFirebase: ", err); }
+            // Parse body into "$" variable
+            var $ = cheerio.load(body); 
+            // Sales data html element of campaign
+            var sales_data_el = $(".persistent_timer__order_count");
+            var sales_data_text = undefined;
+            if (sales_data_el.length > 0) {
+                sales_data_text = sales_data_el.text().toLowerCase();
+            }
+            // Message on html element if campaign ended
+            var campaign_ended = $(".persistent_timer__stats--relaunchable").length > 0;
+            // Delete associated rows in "campaigns" and "sales_data" tables if: campaign has ended, not reporting sales data element, or not reporting sales data
+            if (campaign_ended || sales_data_text === undefined || (sales_data_text.indexOf("only") !== -1 && sales_data_text.indexOf("sold") !== -1)) {
+                console.log("Delete campaign with url:", campaign_url);
+                // Delete all sales data related to campaign. Asynchronous.
+                refSalesData.orderByChild("campaign_url").equalTo(campaign_url).on("child_added", function (snapshot) {
+                    snapshot.ref.remove();
+                }, function (err) {
+                    console.log("The read failed: " + err.code);
+                });
+                // Delete actual campaign (there should be only one campaign)
+                refCampaigns.orderByChild("url").equalTo(campaign_url).limitToFirst(1).on("child_added", function (snapshot) {
+                    snapshot.ref.remove();
+                    // Go on to check and delete next campaign if necessary
+                    cleanCampaignFromFirebase(i+1);
+                }, function (err) {
+                    console.log("The read failed: " + err.code);
+                });
+            } else {
+                // Go on to check and delete next campaign if necessary
+                cleanCampaignFromFirebase(i+1);
+            }
+        });
+    } else {
+        console.log("finished cleanDatabase.");
+        // Go on to the next step
+        teeviewScraper();
+    }
 }
 
-// Activate teeviewScraper
-teeviewScraper();
+var database_cleaner_campaign_urls = [];
+
+function cleanDatabase () {
+    console.log("-> cleanDatabase() start");
+    // Make asynchronous call to fetch all campaigns
+    refCampaigns.once("value").then(function(snapshot) {
+        var obj = snapshot.val();
+        // Update database_cleaner_campaign_urls
+        database_cleaner_campaign_urls = [];
+        for (var key in obj) {
+            database_cleaner_campaign_urls.push(obj[key].url);
+        }
+        // Loop through each campaign and clean Firebase it appropriate
+        cleanCampaignFromFirebase(0);
+    });
+}
+
+// Run loop. It starts by cleaning the database. Checking that every campaign added has not ended or
+// is still reporting data, if it is not it deletes it and all sales data associated to it. 
+// Afterwards it scrapes all campaigns on teeview.org which have been added within the last day
+// or up until the latest campaign queried. Whatever happens first. Then it goes on to add this
+// newly added campaigns onto the Firebase database after which it queries each campaign on the
+// database. Both old and new and gets the latest sales reported data from Teespring itself. 
+function runLoop () {
+    cleanDatabase();
+}
+runLoop();
