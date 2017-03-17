@@ -3,7 +3,6 @@ var request = require('tinyreq');
 var cheerio = require("cheerio");
 var admin = require("firebase-admin");
 var fs = require("fs");
-var config = require("./config/config.json");
 
 // Authenticate Server to Firebase
 var serviceAccount = require("./config/teeview-movement-sensor-key.json");
@@ -18,17 +17,33 @@ var campaignsRef = db.ref("campaigns");
 var salesDataRef = db.ref("salesData");
 var configRef = db.ref("config");
 
-// Updates config.json file
-function updateConfig (latestCampaignLink, lastQueryTimestamp) {
-    config.latestCampaignLink = latestCampaignLink;
-    config.lastQueryTimestamp = lastQueryTimestamp;
-    fs.writeFile("./config/config.json", JSON.stringify(config), (err) => {
-        if (err) throw err;
-        console.log("Updated config.json");
+// Updates config node in Firebase
+function updateConfig (newConfigObject) {
+    for (var key in newConfigObject) {
+        // Update config object
+        config[key] = newConfigObject[key];
+        // Update config Firebase node
+        configRef.child(key).set(newConfigObject[key]);
+    }
+    console.log("Updated config Firebase node");
+}
+
+// ####---- First Function: Loads Config Firebase Node ----####
+
+// Define variables
+var config = {};
+// Loads the config Firebase node into the config object
+function loadConfig () {
+    configRef.once("value").then(function (snapshot) {
+        // Load the config node into the config object
+        config = snapshot.val();
+        console.log("Loaded config object");
+        // Start the loop by cleaning the database
+        cleanDatabaseOnFirebase();
     });
 }
 
-// ####---- First Function: Cleans the Firebase Database ----####
+// ####---- Second Function: Cleans the Firebase Database ----####
 
 // Define variables
 var cleanCampaignUrls = [];
@@ -92,7 +107,7 @@ function cleanCampaignFromFirebase (i) {
     }
 }
 
-// ####---- Second Function: Scrapes Teeview.org ----####
+// ####---- Third Function: Scrapes Teeview.org ----####
 
 // Define variables
 var continueScraping = true;
@@ -135,14 +150,14 @@ function scrapeTeeviewPage (page) {
     });
 }
 
-// ####---- Third Function: Updates "campaigns" Firebase node ----####
+// ####---- Fourth Function: Updates "campaigns" Firebase node ----####
 
 // Updates "campaigns" node on Firebase
 function updateCampaignsOnFirebase () {
     console.log("Started adding campaigns to Firebase");
     // Update the JSON config file if there is new data on teeview
     if (teeviewData.length > 0) {
-        updateConfig(teeviewData[0], Math.floor(Date.now() / 1000));
+        updateConfig({latestCampaignLink: teeviewData[0]});
     }
     // Loop through each campaign url and add if it reporting sales on Teespring
     addCampaignToFirebase(0);
@@ -186,7 +201,7 @@ function addCampaignToFirebase (i) {
     }
 }
 
-// ####---- Fourth Function: Updates Sales Data of Campaigns Stored on Firebase ----####
+// ####---- Fifth Function: Updates Sales Data of Campaigns Stored on Firebase ----####
 
 // Define variables
 var salesDataCampaignsUrls = [];
@@ -246,6 +261,7 @@ function addSalesDataToFirebase (i) {
         console.log("Finished updating salesData node on Firebase");
         // Finished the loop
         console.log(">>Finished the loop. I'll go to sleep now. C'ya!");
+        updateConfig({lastQueryTimestamp: Math.floor(Date.now()/1000)});
         process.exit();
     }
 }
@@ -256,5 +272,5 @@ function addSalesDataToFirebase (i) {
 // or up until the latest campaign queried. Whatever happens first. Then it goes on to add this
 // newly added campaigns onto the Firebase database after which it queries each campaign on the
 // database. Both old and new and gets the latest sales reported data from Teespring itself. 
-function runLoop () { cleanDatabaseOnFirebase(); }
+function runLoop () { loadConfig(); }
 runLoop();
