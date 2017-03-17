@@ -1,7 +1,7 @@
 {
   "name": "teeview_analytics",
   "version": "1.0.0",
-  "description": "Teeview analytics tool on nodejs",
+  "description": "Teeview movement sensor tool built on nodejs and Firebase",
   "main": "teeview_analytics.js",
   "author": "aukintux",
   "license": "ISC",
