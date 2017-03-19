@@ -1,0 +1,4 @@
+cron:
+- description: scraper job
+  url: /
+  schedule: every 3 hours

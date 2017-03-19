@@ -1,0 +1,20 @@
+{
+  "name": "teeview-movement-sensor-backend-scraper",
+  "version": "1.0.0",
+  "description": "Teeview movement sensor tool built on nodejs and Firebase",
+  "version": "0.0.1",
+  "private": true,
+  "author": "aukintux",
+  "engines": {
+    "node": ">=4.3.2"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.14.1",
+    "cheerio": "^0.22.0",
+    "firebase-admin": "^4.1.3",
+    "tinyreq": "^3.2.0"
+  }
+}
