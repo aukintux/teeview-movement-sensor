@@ -130,7 +130,7 @@ app.get('/', (req, res) => {
             // Log progress of function
             console.log("Scraping page " + page + " of teeview.org");
             // Make request to teeview and scrape campaigns
-            request("https://www.teeview.org/site/index?active=true&page=" + page + "&per-page=12", function (err, body) {
+            request("https://www.teeview.org/site/index?active=true&sunfrog=false&page=" + page + "&per-page=12", function (err, body) {
                 // If error return
                 if (err) { return console.log("Error in request @ scrapeTeeviewPage: ", err); }
                 // Parse body into "$" variable
