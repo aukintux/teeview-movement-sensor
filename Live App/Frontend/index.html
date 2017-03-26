@@ -36,13 +36,14 @@
 		<p class="lead">This project gathers data of Teespring campaigns trough the scrape of Teeview and only reflects those who report sales data in order to graphically show the sales development of each campaign.</p>
 		<p class="small">The purpose of this is to identify promising campaigns, and as such, market opportunities before the become a realitiy and the market becomes saturated from such a design.</p>
 		<div class="row">
-			<div class="col-sm-6" data-ng-repeat="item in plotDataAry">
+			<div class="col-sm-6" data-ng-repeat="item in plotDataAry | orderBy:'-lastSaleCount' ">
 				<!-- No data message -->
 				<div class="well lead text-center" data-ng-show="plotDataAry.length === 0">No Data</div>
 				<!-- Plotly plots -->
 				<div id="plotly-{{item.url}}" style="width: 480px; height: 400px;" data-ng-show="plotDataAry.length > 0"></div>
 				<div class="well small">
 					<p>{{item.name}}</p>
+					<p>{{item.maxSales}}</p>
 					<p><a target="_blank" data-ng-href="{{item.url}}">{{item.url}}</a></p>
 				</div>
 			</div>

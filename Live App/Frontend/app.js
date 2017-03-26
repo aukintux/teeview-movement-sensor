@@ -44,13 +44,9 @@ app.controller('appController', ["$scope", function($scope) {
 				// Process campaignsData into plotDataAry
 				for (var key in $scope.campaignData) {
 					var item = $scope.campaignData[key];
-					item.maxSales = Math.max(item.sales);
+					item["lastSaleCount"] = item.sales[item.sales.length - 1];
 					$scope.plotDataAry.push(item);				
 				}
-				// Sort plotDataAry by maxSales in descending order
-				$scope.plotDataAry = $scope.plotDataAry.sort(function (a, b) {
-					return b.maxSales - a.maxSales;
-				});
 				// Plot each campaign once the html has finished rendering
 				$(function (arguments) {
 					angular.forEach($scope.plotDataAry, function (item, index) {
