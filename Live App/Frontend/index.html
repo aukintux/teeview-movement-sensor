@@ -26,22 +26,37 @@
 	<script src="js/app.js"></script>
 </head>
 <body data-ng-controller="appController">
-	<div class="container">
-		<h1 class="page-header text-center">Teeview Movement Sensor</h1>
-		<p class="small text-right">
-			<strong>Last time queried:</strong> {{infoData.lastQueryTimestamp}}
-			-
-			<strong>Latest campaign link:</strong> <a target="_blank" data-ng-href="{{infoData.latestCampaignLink}}">{{infoData.latestCampaignLink}}</a>			
-			-
-			<strong>Number of campaigns:</strong> {{plotDataAry.length}}
-		</p>
-		<p class="lead">This project gathers data of Teespring campaigns trough the scrape of Teeview and only reflects those who report sales data in order to graphically show the sales development of each campaign.</p>
-		<p class="small">The purpose of this is to identify promising campaigns, and as such, market opportunities before the become a realitiy and the market becomes saturated from such a design.</p>
-		<div class="well lead text-center" data-ng-show="plotDataAry.length === 0">
-			No Data
-		</div>
-		<!-- No data message -->
+	<div class="overheader">
+		<ul>
+			<li>
+				<span class="name"><i class="fa fa-clock-o"></i> Lastest Query</span>
+				<span class="small">{{infoData.lastQueryTimestamp}}</span>
+			</li>
+			<li>
+				<span class="name"><i class="fa fa-link"></i> Lastest Campaign</span>
+				<span class="small">{{infoData.latestCampaignLink}}</span>
+			</li>
+			<li>
+				<span class="name"><i class="fa fa-list"></i> Campaigns Count</span>
+				<span class="small">{{plotDataAry.length}}</span>
+			</li>
+		</ul>
 	</div>
+	<!-- /.overheader -->
+	<div class="header">
+		<h1 class="text-center">Teeview Movement Sensor</h1>
+	</div>
+	<!-- /.header -->
+	<div class="subheader">
+		This project gathers data of Teespring campaigns trough the scrape of <a target="_blank" href="www.teeview.org">Teeview.org</a> and shows the development process regarding sales of those campaigns which show any movement. The purpose of this project is to identify promising campaigns, that is, market opportunities before the become a realitiy and the market becomes saturated from such a design.
+	</div>
+	<!-- /.subheader -->
+	<div class="well well-no-data lead text-center" data-ng-show="plotDataAry.length === 0">
+		Currently there are no campaigns scraped by <a target="_blank" href="www.teeview.org">Teeview.org</a> <br> which are currently active on Teespring and show any signs of movement with respect to sales.
+		<br><br>
+		Please come back later.
+	</div>
+	<!-- No data message -->
 	<div class="container-plots" data-ng-show="plotDataAry.length > 0">
 		<div class="item-plot" data-ng-repeat="item in plotDataAry | orderBy:'-lastSaleCount' ">
 			<div class="block-title">
