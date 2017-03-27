@@ -70,11 +70,7 @@ app.controller('appController', ["$scope", function($scope) {
 								type: 'scatter'
 							}
 						];
-						var layout = {
-						    title: item.name,
-						    showlegend: false
-						};
-						Plotly.newPlot("plotly-"+item.url, data, layout);
+						Plotly.newPlot("plotly-"+item.url, data);
 					});
 				});
 				// Update $scope

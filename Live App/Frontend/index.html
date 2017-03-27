@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<!-- Load Font Awesome -->
 	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+	<!-- Load Styles -->
+	<link rel="stylesheet" href="css/styles.css" />
 	<!-- AngularJS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 	<!-- Firebase -->
@@ -21,7 +23,7 @@
 	<!-- Plotly.js -->
   	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	<!-- Load app.js -->
-	<script src="app.js"></script>
+	<script src="js/app.js"></script>
 </head>
 <body data-ng-controller="appController">
 	<div class="container">
@@ -35,20 +37,36 @@
 		</p>
 		<p class="lead">This project gathers data of Teespring campaigns trough the scrape of Teeview and only reflects those who report sales data in order to graphically show the sales development of each campaign.</p>
 		<p class="small">The purpose of this is to identify promising campaigns, and as such, market opportunities before the become a realitiy and the market becomes saturated from such a design.</p>
-		<div class="row">
-			<div class="col-sm-6" data-ng-repeat="item in plotDataAry | orderBy:'-lastSaleCount' ">
-				<!-- No data message -->
-				<div class="well lead text-center" data-ng-show="plotDataAry.length === 0">No Data</div>
-				<!-- Plotly plots -->
-				<div id="plotly-{{item.url}}" style="width: 480px; height: 400px;" data-ng-show="plotDataAry.length > 0"></div>
-				<div class="well small">
-					<p>{{item.name}}</p>
-					<p>{{item.lastSaleCount}}</p>
-					<p><strong>{{item.identical}}</strong></p>
-					<p><a target="_blank" data-ng-href="{{item.url}}">{{item.url}}</a></p>
-				</div>
-			</div>
+		<div class="well lead text-center" data-ng-show="plotDataAry.length === 0">
+			No Data
 		</div>
+		<!-- No data message -->
 	</div>
+	<div class="container-plots" data-ng-show="plotDataAry.length > 0">
+		<div class="item-plot" data-ng-repeat="item in plotDataAry | orderBy:'-lastSaleCount' ">
+			<div class="block-title">
+				<a target="_blank" data-ng-href="{{item.url}}">{{item.name}}</a>
+			</div>
+			<!-- /.block-title -->
+			<div class="block-content">
+				<div class="block-img">
+					<a target="_blank" data-ng-href="{{item.url}}"><img data-ng-src="{{item.img}}"></a>						
+				</div>
+				<div class="block-plotly" id="plotly-{{item.url}}"></div>
+				<!-- /.block-plotly -->
+				<div class="block-info">
+					<p><strong>Sales:</strong> <span>{{item.lastSaleCount}}</span></p>
+					<p><strong>Velocity:</strong> 5 sales every 3 hours</p>
+					<p><strong>Acceleration:</strong> Velocity increases by 3 additional sales every 3 hours</p>
+					<p><strong>Sales: $1,000 - $5,000</strong></p>
+				</div>
+				<!-- /.block-info -->
+			</div>
+			<!-- /.block-content -->
+			
+		</div>
+		<!-- /.item-plot -->
+	</div>
+	<!-- /.row.row-plots -->
 </body>
 </html>

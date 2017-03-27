@@ -190,7 +190,7 @@ app.get('/', (req, res) => {
                         campaignsRef.push({
                             url: campaignUrl,
                             name: $(".campaign__name").text(),
-                            img: "https:" + $(".image_stack__image").attr("src")
+                            img: $(".image_stack__image").attr("src")
                         }, function (err) {
                             if (err) { return console.log("Error in request @ addCampaignToFirebase: ", err); }
                             // Write campaign to firebase

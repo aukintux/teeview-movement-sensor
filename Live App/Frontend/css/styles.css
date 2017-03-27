@@ -1,0 +1,51 @@
+/* Plots Row Styles */
+.container-plots {
+	width: 100%;
+	background-color: #f0f0f0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+/* Plot Item */
+.container-plots .item-plot {
+	padding-top: 20px;
+	width: 100%;
+	height: 450px;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	background-color: #fff;
+}
+	/* Title */
+	.container-plots .item-plot .block-title {
+		text-align: center;
+	}
+		.container-plots .item-plot .block-title a {
+			text-decoration: none;
+			text-transform: uppercase;
+			font-size: 20px;
+		}
+	/* Content */
+	.container-plots .item-plot .block-content {
+		height: 100%;
+	}
+		.container-plots .item-plot .block-img {
+			float: left;
+			width: 350px;
+			padding-top: 50px;
+			text-align: center;
+		}
+			.container-plots .item-plot .block-img img {
+				height: 300px;
+			}
+		.container-plots .item-plot .block-plotly {
+			float: left;
+			width: 400px; 
+			height: 400px;
+		}
+		.container-plots .block-info {
+			width: 100%; 
+			padding-left: 400px;
+			padding-top: 100px;
+			height: 100%;
+		}
