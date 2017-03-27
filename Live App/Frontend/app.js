@@ -12,6 +12,15 @@ app.controller('appController', ["$scope", function($scope) {
 	$scope.campaignData = {};
 	$scope.plotDataAry = [];
 	$scope.infoData = {};
+	// Check if every element in array is equal i.e. there is no movement in the campaign
+	function identical(array) {
+	    for(var i = 0; i < array.length - 1; i++) {
+	        if(array[i] !== array[i+1]) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
 	// Define page updater function
 	function pageUpdater () {
 		// Reset variables
@@ -44,8 +53,12 @@ app.controller('appController', ["$scope", function($scope) {
 				// Process campaignsData into plotDataAry
 				for (var key in $scope.campaignData) {
 					var item = $scope.campaignData[key];
-					item["lastSaleCount"] = item.sales[item.sales.length - 1];
-					$scope.plotDataAry.push(item);				
+					// Add campaign if there is movement i.e. if all sale data points are not equal
+					if (identical(item.sales)===false) {
+						item["lastSaleCount"] = item.sales[item.sales.length - 1];
+						item["identical"] = identical(item.sales);
+						$scope.plotDataAry.push(item);				
+					}
 				}
 				// Plot each campaign once the html has finished rendering
 				$(function (arguments) {
