@@ -189,7 +189,7 @@ app.get('/', (req, res) => {
                     if (salesDataText.indexOf("only") !== -1 || salesDataText.indexOf("sold") !== -1) {
                         campaignsRef.push({
                             url: campaignUrl,
-                            name: $(".campaign__name").text(),
+                            name: $(".campaign__name.display--desktop").text(),
                             img: $(".image_stack__image").attr("src")
                         }, function (err) {
                             if (err) { return console.log("Error in request @ addCampaignToFirebase: ", err); }
