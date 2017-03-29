@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="css/styles.css" />
 	<!-- AngularJS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+	<!-- Angular Material Library -->
+  	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 	<!-- Firebase -->
 	<script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
 	<!-- AngularFire -->
@@ -48,40 +50,38 @@
 	</div>
 	<!-- /.header -->
 	<div class="subheader">
-		This project gathers data of Teespring campaigns trough the scrape of <a target="_blank" href="www.teeview.org">Teeview.org</a> and shows the development process regarding sales of those campaigns which show any movement. The purpose of this project is to identify promising campaigns, that is, market opportunities before the become a realitiy and the market becomes saturated from such a design.
+		This project gathers data of Teespring campaigns trough the scrape of <a target="_blank" href="http://www.teeview.org/">Teeview.org</a> and shows the development process regarding sales of those campaigns which show any movement. The purpose of this project is to identify promising campaigns, that is, market opportunities before the become a realitiy and the market becomes saturated from such a design.
 	</div>
 	<!-- /.subheader -->
-	<div class="well well-no-data lead text-center" data-ng-show="plotDataAry.length === 0">
-		Currently there are no campaigns scraped by <a target="_blank" href="www.teeview.org">Teeview.org</a> <br> which are currently active on Teespring and show any signs of movement with respect to sales.
-		<br><br>
-		Please come back later.
+	<div class="well well-no-data lead text-center" data-ng-show="plotDataAry.length===0">
+		<span data-ng-show="isLoading===false">
+			Currently there are no campaigns scraped by <a target="_blank" href="http://www.teeview.org/">Teeview.org</a> <br> which are currently active on Teespring and show any signs of movement with respect to sales.
+			<br><br>
+			Please come back later.
+		</span>
+		<span data-ng-show="isLoading===true">
+			Loading data...
+			<!-- <md-progress-circular md-mode="indeterminate"></md-progress-circular> -->
+		</span>
 	</div>
 	<!-- No data message -->
-	<div class="container-plots" data-ng-show="plotDataAry.length > 0">
-		<div class="item-plot" data-ng-repeat="item in plotDataAry | orderBy:'-lastSaleCount' ">
-			<div class="block-title">
+	<div class="container-fluid container-plots" data-ng-show="plotDataAry.length>0">
+		<div class="row row-item-plot" data-ng-repeat="item in plotDataAry | orderBy:'-lastSaleCount' ">
+			<div class="col-sm-12 col-block-title">
 				<a target="_blank" data-ng-href="{{item.url}}">{{item.name}}</a>
 			</div>
-			<!-- /.block-title -->
-			<div class="block-content">
-				<div class="block-img">
-					<a target="_blank" data-ng-href="{{item.url}}"><img data-ng-src="{{item.img}}"></a>						
-				</div>
-				<div class="block-plotly" id="plotly-{{item.url}}"></div>
-				<!-- /.block-plotly -->
-				<div class="block-info">
-					<p><strong>Sales:</strong> <span>{{item.lastSaleCount}}</span></p>
-					<p><strong>Velocity:</strong> 5 sales every 3 hours</p>
-					<p><strong>Acceleration:</strong> Velocity increases by 3 additional sales every 3 hours</p>
-					<p><strong>Sales: $1,000 - $5,000</strong></p>
-				</div>
-				<!-- /.block-info -->
+			<!-- /.col-block-title -->
+			<div class="col-sm-4 col-block-img">
+				<a target="_blank" data-ng-href="{{item.url}}"><img data-ng-src="{{item.img}}"></a>						
 			</div>
-			<!-- /.block-content -->
-			
+			<!-- /.col-block-img -->
+			<div class="col-sm-8 col-block-plot">
+				<div class="block-plotly" id="plotly-{{item.url}}"></div>
+			</div>
+			<!-- /.col-block-plot -->
 		</div>
-		<!-- /.item-plot -->
+		<!-- /.row-item-plot -->
 	</div>
-	<!-- /.row.row-plots -->
+	<!-- /.container-plots -->
 </body>
 </html>

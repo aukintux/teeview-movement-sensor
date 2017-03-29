@@ -49,52 +49,35 @@
 }
 /* Plots Row Styles */
 .container-plots {
-	width: 100%;
 	background-color: #f0f0f0;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 30px;
-	padding-right: 30px;
 }
 /* Plot Item */
-.container-plots .item-plot {
+.container-plots .row.row-item-plot {
 	padding-top: 20px;
-	width: 100%;
-	height: 450px;
 	margin-top: 40px;
 	margin-bottom: 40px;
+	margin-left: 30px;
+	margin-right: 30px;
 	background-color: #fff;
 }
 	/* Title */
-	.container-plots .item-plot .block-title {
+	.container-plots .row.row-item-plot .col-block-title {
 		text-align: center;
 	}
-		.container-plots .item-plot .block-title a {
+		.container-plots .row.row-item-plot .col-block-title a {
 			text-decoration: none;
-			text-transform: uppercase;
 			font-size: 20px;
 		}
-	/* Content */
-	.container-plots .item-plot .block-content {
-		height: 100%;
+	/* Image */
+	.container-plots .row.row-item-plot .col-block-img {
+		padding-top: 50px;
+		text-align: center;
 	}
-		.container-plots .item-plot .block-img {
-			float: left;
-			width: 350px;
-			padding-top: 50px;
-			text-align: center;
+		.container-plots .row.row-item-plot .col-block-img img {
+			height: 300px;
 		}
-			.container-plots .item-plot .block-img img {
-				height: 300px;
-			}
-		.container-plots .item-plot .block-plotly {
-			float: left;
-			width: 400px; 
-			height: 400px;
-		}
-		.container-plots .block-info {
-			width: 100%; 
-			padding-left: 400px;
-			padding-top: 100px;
-			height: 100%;
-		}
+	/* Plotly Plot */
+	.container-plots .row.row-item-plot .col-block-plotly {
+		float: left;
+		height: 400px;
+	}

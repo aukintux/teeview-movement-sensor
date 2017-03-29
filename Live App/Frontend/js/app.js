@@ -1,5 +1,5 @@
 // Single page application
-var app = angular.module('teeviewMovementSensorApp', ["firebase"]);
+var app = angular.module('teeviewMovementSensorApp', ["firebase", "ngMaterial"]);
 
 // masterController
 app.controller('appController', ["$scope", function($scope) {
@@ -12,6 +12,7 @@ app.controller('appController', ["$scope", function($scope) {
 	$scope.campaignData = {};
 	$scope.plotDataAry = [];
 	$scope.infoData = {};
+	$scope.isLoading = true;
 	// Check if every element in array is equal i.e. there is no movement in the campaign
 	function identical(array) {
 	    for(var i = 0; i < array.length - 1; i++) {
@@ -23,6 +24,7 @@ app.controller('appController', ["$scope", function($scope) {
 	}
 	// Define page updater function
 	function pageUpdater () {
+		$scope.isLoading = true; 
 		// Reset variables
 		$scope.campaignData = {};
 		$scope.plotDataAry = [];
@@ -50,7 +52,7 @@ app.controller('appController', ["$scope", function($scope) {
 					var formatedPlotlyDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 					$scope.campaignData[salesData.campaignUrl].timestamps.push(formatedPlotlyDate);
 				}
-				// Process campaignsData into plotDataAry
+				// Filter campaignsData into plotDataAry. Select only those which show movement
 				for (var key in $scope.campaignData) {
 					var item = $scope.campaignData[key];
 					// Add campaign if there is movement i.e. if all sale data points are not equal
@@ -70,11 +72,18 @@ app.controller('appController', ["$scope", function($scope) {
 								type: 'scatter'
 							}
 						];
-						Plotly.newPlot("plotly-"+item.url, data);
+						var layout = {
+							yaxis: {title: 'Sales'},
+							margin: {t: 20},
+							hovermode: 'closest'
+						};
+						Plotly.newPlot("plotly-"+item.url, data, layout);
 					});
 				});
 				// Update $scope
 				$scope.$apply();
+				// Finished loading
+				$scope.isLoading = false;
 			});
 		});
 		// Load config data

@@ -104,8 +104,45 @@ app.get('/', (req, res) => {
                             console.log("The read failed: " + err.code);
                         });
                     } else {
-                        // Go on to check and delete next campaign if necessary
-                        cleanCampaignFromFirebase(i+1);
+                        // Check if the sales data of campaignUrl has no movement in longer than 3 days, 24 data points
+                        salesDataRef.orderByChild("campaignUrl").equalTo(campaignUrl).once("value").then(function(snapshot) {
+                            // Define variables
+                            var obj = snapshot.val();
+                            var thereIsMovement = false;
+                            var size = 0;
+                            var prevSales = undefined;
+                            // Loop through sales object and see if there is no movement
+                            for (var key in obj) {
+                                if (obj[key].sales !== prevSales && prevSales !== undefined) {
+                                    thereIsMovement = true;
+                                    break;
+                                }
+                                // Update size and prevSales
+                                size++;
+                                prevSales = obj[key].sales;
+                            }
+                            // If there is no movement for longer than 3 days delete
+                            if (thereIsMovement===false && size>=24) {
+                                console.log("Delete " + campaignUrl + " from Firebase");
+                                // Delete all sales data related to campaign. Asynchronous.
+                                salesDataRef.orderByChild("campaignUrl").equalTo(campaignUrl).on("child_added", function (snapshot) {
+                                    snapshot.ref.remove();
+                                }, function (err) {
+                                    console.log("The read failed: " + err.code);
+                                });
+                                // Delete actual campaign (there should be only one campaign)
+                                campaignsRef.orderByChild("url").equalTo(campaignUrl).limitToFirst(1).on("child_added", function (snapshot) {
+                                    snapshot.ref.remove();
+                                    // Go on to check and delete next campaign if necessary
+                                    cleanCampaignFromFirebase(i+1);
+                                }, function (err) {
+                                    console.log("The read failed: " + err.code);
+                                });
+                            } else {
+                                // Go on to check and delete next campaign if necessary
+                                cleanCampaignFromFirebase(i+1);
+                            }
+                        });
                     }
                 });
             } else {
