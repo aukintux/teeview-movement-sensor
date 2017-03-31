@@ -57,8 +57,8 @@ app.controller('appController', ["$scope", function($scope) {
 					var item = $scope.campaignData[key];
 					// Add campaign if there is movement i.e. if all sale data points are not equal
 					if (identical(item.sales)===false) {
+						console.log(item.sales);
 						item["lastSaleCount"] = item.sales[item.sales.length - 1];
-						item["identical"] = identical(item.sales);
 						$scope.plotDataAry.push(item);				
 					}
 				}

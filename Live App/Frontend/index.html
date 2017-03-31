@@ -4,6 +4,8 @@
 	<meta charset="utf-8" /> 
 	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'/>
 	<title>Teeview Movement Sensor</title> 
+	<meta name="description" content="Teeview Movement Sensor displays Teeview campaigns that show movement in sales and plots the their evolution.">
+	<meta name="keywords" content="Teeview,Teespring">
 	<!-- Load Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<!-- Load Font Awesome -->
@@ -13,11 +15,11 @@
 	<!-- AngularJS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 	<!-- AngularJS Libraries required by Angular Material Library -->
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
 	<!-- Angular Material Library -->
-	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 	<!-- Firebase -->
 	<script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
 	<!-- AngularFire -->
@@ -35,15 +37,15 @@
 	<div class="overheader">
 		<ul>
 			<li>
-				<span class="name"><i class="fa fa-clock-o"></i> Lastest Query</span>
+				<span class="name"><i class="fa fa-clock-o"></i> Last Run Time</span>
 				<span class="small">{{infoData.lastQueryTimestamp}}</span>
 			</li>
 			<li>
-				<span class="name"><i class="fa fa-link"></i> Lastest Campaign</span>
+				<span class="name"><i class="fa fa-link"></i> Last Campaign Tracked</span>
 				<span class="small">{{infoData.latestCampaignLink}}</span>
 			</li>
 			<li>
-				<span class="name"><i class="fa fa-list"></i> Campaigns Count</span>
+				<span class="name"><i class="fa fa-list"></i> Active Moving Campaigns</span>
 				<span class="small">{{plotDataAry.length}}</span>
 			</li>
 		</ul>
@@ -54,19 +56,21 @@
 	</div>
 	<!-- /.header -->
 	<div class="subheader">
-		This project gathers data of Teespring campaigns trough the scrape of <a target="_blank" href="http://www.teeview.org/">Teeview.org</a> and shows the development process regarding sales of those campaigns which show any movement. The purpose of this project is to identify promising campaigns, that is, market opportunities before the become a realitiy and the market becomes saturated from such a design.
+		This project gathers data of <a target="_blank" href="https://teespring.com/">Teespring</a> campaigns trough the scrape of <a target="_blank" href="http://www.teeview.org/">Teeview.org</a>. By gathering and accumulating sales data of active campaigns it detects those which show any sign of movement in sales and portraits their sales evolution process. 
+		<br><br>
+		The purpose of this project is to identify promising active campaigns on <a target="_blank" href="https://teespring.com/">Teespring</a> in near real-time, that is, to identify market opportunities before they completely materialize and the market becomes saturated from such a design.
 	</div>
 	<!-- /.subheader -->
 	<div class="well well-no-data lead text-center" data-ng-show="plotDataAry.length===0">
 		<span data-ng-show="isLoading===false">
-			Currently there are no campaigns scraped by <a target="_blank" href="http://www.teeview.org/">Teeview.org</a> <br> which are currently active on Teespring and show any signs of movement with respect to sales.
+			Currently there are no campaigns scraped by <a target="_blank" href="http://www.teeview.org/">Teeview.org</a> <br> which are currently active on Teespring and show any signs of movement in sales.
 			<br><br>
 			Please come back later.
 		</span>
 		<span data-ng-show="isLoading===true">
 			<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 			<br><br>
-			<small>Please wait a moment while campaigns that have shown movement finish loading.</small>
+			<small>Please wait a moment while campaigns that show movement finish loading.</small>
 		</span>
 	</div>
 	<!-- No data message -->
@@ -77,7 +81,7 @@
 			</div>
 			<!-- /.col-block-title -->
 			<div class="col-sm-4 col-block-img">
-				<a target="_blank" data-ng-href="{{item.url}}"><img data-ng-src="{{item.img}}"></a>						
+				<a target="_blank" data-ng-href="{{item.url}}"><img data-ng-src="{{item.img}}" alt="teeview-campaign-{{item.url}}"></a>						
 			</div>
 			<!-- /.col-block-img -->
 			<div class="col-sm-8 col-block-plot">
