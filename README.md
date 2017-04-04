@@ -1,13 +1,13 @@
 # Teeview Movement Sensor
 
-The purpose of this project is to create an application which continuously scrapes the data on [Teeview.org](http://www.teeview.org/) in order to find out which campaigns are reporting sales data and keeps an eye on them. It then uses this information to track this campaigns and the ones that are newly added in order to generate sales, sales velocity and sales acceleration plots for the most promising campaigns and this way help spot market opportunities through the identification of potentially successful campaigns before they become a real success and the market becomes saturated.
+The purpose of this project is to create an application which continuously scrapes the data on Teeview.org in order to find out which campaigns are reporting sales data and keeps an eye on them. It then uses this information to track this campaigns and the ones that are newly added in order to generate sales, sales velocity and sales acceleration plots for the most promising campaigns and this way help spot market opportunities through the identification of potentially successful campaigns before they become a real success and the market becomes saturated. A live version of the app is available at [Teeview.pro](https://teeview.pro/)
 
 ## Folder Structure
 
-* **POC App:** It contains the initial experimentation work made in order to build the scraper and all functions associated to storing and retrieving data. The POC application to validate the viability of the idea consists of a single Jupyter Notebook.
-* **Live App:** It contains the real application consisting of a Backend and a FrontEnd.
-⋅⋅* **Backend:** It contains the Node.js application which does the heavy lifting. It scrapes the data from [Teeview.org](http://www.teeview.org). Filters the relevant campaigns (those which report sales data). Stores them on Firebase and performs the updating of sales data on Firebase as well. This Backend runs on Google Cloud Platform App Engine every 3 hours in order to continuosly scrape and gather data of relevant campaigns.
-⋅⋅* **FrontEnd:** It contains the Angular.js application which retrieves the Firebase stored data and shows the plots of the top performing campaigns in order to spot market oportunities.
+* __POC App:__ It contains the initial experimentation work made in order to build the scraper and all functions associated to storing and retrieving data. The POC application to validate the viability of the idea consists of a single Jupyter Notebook.
+* __Live App:__ It contains the real application consisting of a Backend and a FrontEnd.
+⋅⋅+ __Backend:__ It contains the Node.js application which does the heavy lifting. It scrapes the data from Teeview.org. Filters the relevant campaigns (those which report sales data). Stores them on Firebase and performs the updating of sales data on Firebase as well. This Backend runs on Google Cloud Platform App Engine every 3 hours in order to continuosly scrape and gather data of relevant campaigns.
+⋅⋅+ __FrontEnd:__ It contains the Angular.js application which retrieves the Firebase stored data and shows the plots of the top performing campaigns in order to spot market oportunities.
 
 ## Getting Started
 
